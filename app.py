@@ -1,4 +1,3 @@
-import pathlib
 import dash  # pip install dash==1.19.0 or higher
 import dash_core_components as dcc
 import dash_html_components as html
@@ -31,22 +30,14 @@ def build_banner():
 tabHead = dbc.Nav(
     [   dbc.NavLink("TRUCKS GEOLOCATION CHARTS", href="/", active="exact"),
         dbc.NavLink("INDIVIDUAL TRUCK CHARTS", href="/Individual_trucks_charts", active="exact", style={'color':'white'}),
-        dbc.NavLink("MANAGEMENT DECISION ENGINE", href="/Management_decision_engine", active="exact"),
+        dbc.NavLink("DECISION ENGINE", href="/Management_decision_engine", active="exact"),
         # dbc.NavLink("PHcourt Branch Control Charts", href="/Portharcourt_Branch_Control_Charts", active="exact"),
         # dbc.NavLink("Management Decision Engine", href="/Management_Decision_Engine", active="exact"),  
     ],style={'width': '80%','margin-bottom':'-3px'},
 )
 
-def load_data(data_file: str) -> pd.DataFrame:
-    '''
-    Load data from /data directory
-    '''
-    PATH = pathlib.Path(__file__).parent
-    DATA_PATH = PATH.joinpath("data").resolve()
-    return pd.read_csv(DATA_PATH.joinpath(data_file))
 
-
-df = load_data('Trucks_dataset.csv')
+df = pd.read_csv('Trucks_dataset.csv')
 df[['latitude', 'longitude']] = df['Coordinates/Address'].str.split(',', expand=True)
 
 df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
@@ -623,7 +614,3 @@ def update_metrics(start_datee, Plate_number):
 
 if __name__ == "__main__":
     app.run_server(debug=False, port=8002)
-
-
-
-
